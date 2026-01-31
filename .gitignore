@@ -1,0 +1,16 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+
+# Node
+node_modules/
+.next/
+out/
+
+# Env & Secrets
+.env
+.env.local
+
+# Databases
+postgres_data/

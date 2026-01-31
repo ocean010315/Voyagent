@@ -1,8 +1,18 @@
 from fastapi import FastAPI
+from app.core.db import init_db
+from contextlib import asynccontextmanager
+
+from app.models.user import User
 
 
-app = FastAPI(title="Voyagent Backend API")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # 서버 시작 시 테이블 생성 (이미 있으면 생성 안 함)
+    init_db()
+    yield
+
+app = FastAPI(title="Voyagent Backend API", lifespan=lifespan)
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"message": "Welcome to the Voyagent Backend API!"}

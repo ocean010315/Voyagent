@@ -1,6 +1,7 @@
 from datetime import timedelta
 from sqlmodel import Session, select
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import FastAPI, Depends, HTTPException, status
 
@@ -8,10 +9,10 @@ from app.core.config import settings
 from app.core.db import init_db, get_session
 from app.core.security import verify_password, get_password_hash, create_access_token
 
-from app.models.user import User, UserBase, UserCreate
 from app.models.travel import Travel
 from app.models.chat import ChatMessages
 from app.models.itinerary import Itinerary
+from app.models.user import User, UserBase, UserCreate
 
 
 @asynccontextmanager
@@ -21,6 +22,20 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(title="Voyagent Backend API", lifespan=lifespan)
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware, # CORS 설정
+    allow_origins=origins, # 허용할 도메인 목록
+    allow_credentials=True, # 쿠키, 인증헤더 허용 여부
+    allow_methods=["*"], # 모든 HTTP 메서드 허용 (GET, POST, etc.)
+    allow_headers=["*"], # 모든 헤더 허용
+)
 
 @app.get("/")
 def read_root():

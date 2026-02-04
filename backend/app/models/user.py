@@ -32,3 +32,11 @@ class UserCreate(UserBase):
     """사용자 생성 시 필요한 입력 모델"""
     
     password: str
+
+
+class UserRead(UserBase):
+    """사용자 조회 시 반환 모델"""
+    
+    is_verified: bool
+    created_at: datetime
+    updated_at: Optional[datetime]

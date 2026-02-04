@@ -5,14 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import FastAPI, Depends, HTTPException, status
 
-from app.core.config import settings
-from app.core.db import init_db, get_session
-from app.core.security import verify_password, get_password_hash, create_access_token
-
 from app.models.travel import Travel
 from app.models.chat import ChatMessages
 from app.models.itinerary import Itinerary
-from app.models.user import User, UserBase, UserCreate
+from app.models.user import User, UserBase, UserCreate, UserRead
+
+from app.core.config import settings
+from app.core.db import init_db, get_session
+from app.core.security import verify_password, get_password_hash, create_access_token, get_current_user
 
 
 @asynccontextmanager
@@ -82,3 +82,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Session = D
     )
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+@app.get("/users/me", response_model=UserRead)
+def read_current_user(current_user: User = Depends(get_current_user)):
+    return current_user

@@ -6,8 +6,6 @@ from typing import Optional
 from app.models.travel import Travel
 
 
-KST = timezone(timedelta(hours=9))  # 한국 표준시 (KST)
-
 class ChatMessages(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
 
@@ -16,6 +14,6 @@ class ChatMessages(SQLModel, table=True):
 
     role: str = Field(nullable=False, max_length=50)  # user, assistant
     content: str = Field(nullable=False, max_length=5000)
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(KST))
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     travel: Optional["Travel"] = Relationship(back_populates="chats")

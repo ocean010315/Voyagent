@@ -1,10 +1,8 @@
 from uuid import UUID, uuid4
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 from sqlmodel import SQLModel, Field
 from typing import Optional
 
-
-KST = timezone(timedelta(hours=9))  # 한국 표준시 (KST)
 
 class User(SQLModel, table=True):
     # Primary Key로 UUID 사용
@@ -16,5 +14,5 @@ class User(SQLModel, table=True):
     email: str = Field(unique=True, nullable=False)
 
     is_verifieid: bool = Field(default=False)  # default: 고정된 값
-    created_at: datetime = Field(default_factory=lambda: datetime.now(KST))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: Optional[datetime] = Field(default=None)

@@ -8,8 +8,6 @@ if TYPE_CHECKING:
     from app.models.chat import ChatMessages
 
 
-KST = timezone(timedelta(hours=9)) # 한국 표준시 (KST)
-
 class Travel(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     
@@ -20,8 +18,8 @@ class Travel(SQLModel, table=True):
     start_date: datetime
     end_date: datetime
 
-    created_at: datetime = Field(default_factory=lambda: datetime.now(KST))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(KST))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     # travel.itineraries, travel.chats 로 접근 가능
     itineraries: List["Itinerary"] = Relationship(back_populates="travel") # back_populates: 양방향 관계 설정

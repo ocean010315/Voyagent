@@ -3,6 +3,9 @@ from app.core.db import init_db
 from contextlib import asynccontextmanager
 
 from app.models.user import User
+from app.models.travel import Travel
+from app.models.chat import ChatMessages
+from app.models.itinerary import Itinerary
 
 
 @asynccontextmanager
